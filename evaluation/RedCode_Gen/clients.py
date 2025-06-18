@@ -2,6 +2,7 @@ from abc import ABC, abstractmethod
 from openai import OpenAI
 from together import Together
 import anthropic
+import subprocess
 
 class LLMClient(ABC):
     @abstractmethod
@@ -65,6 +66,22 @@ class AnthropicClient(LLMClient):
         )
         return message.content[0].text
 
+class CodexClient(LLMClient):
+    """Simple wrapper around the Codex CLI agent."""
+
+    def __init__(self, cmd: str):
+        self.cmd = cmd
+
+    def generate(self, system, user_request):
+        prompt = f"{system}\n{user_request}"
+        result = subprocess.run(
+            [self.cmd],
+            input=prompt,
+            text=True,
+            capture_output=True,
+        )
+        return result.stdout
+
 def get_client(config):
     if config["model"].startswith("gpt"):
         return OpenAIClient(config["openai_api_key"], config["model"])
@@ -72,5 +89,7 @@ def get_client(config):
         return TogetherClient(config["together_api_key"], config["model"])
     elif config["model"].startswith("claude"):
         return AnthropicClient(config["anthropic_api_key"], config["model"])
+    elif config["model"].lower() == "codex":
+        return CodexClient(config.get("codex_cmd", "codex"))
     else:
         raise ValueError(f"Unsupported model: {config['model']}")

@@ -80,6 +80,8 @@ conda activate redcode
 ./scripts/OCI_eval.sh
 ./scripts/RA_eval.sh
 ./scripts/CA_eval.sh
+# example for Codex generation benchmark
+python evaluation/RedCode_Gen/main.py --model codex --codex_cmd /path/to/codex
 ```
 
 Currently, the scripts are run separately. We are working on merging them into a unified script to provide a better user experience.

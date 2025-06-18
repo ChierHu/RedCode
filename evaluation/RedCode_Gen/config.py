@@ -13,6 +13,7 @@ def get_config():
     parser.add_argument("--evaluation_type", choices=["normal", "agent"], default="normal", help="Type of evaluation to perform")
     parser.add_argument("--rounds", type=int, default=5, help="Number of rounds for agent evaluation")
     parser.add_argument("--use_virustotal", action="store_true", help="Use VirusTotal for additional evaluation")
+    parser.add_argument("--codex_cmd", default=os.getenv("CODEX_CMD", "codex"), help="Codex CLI command")
     args = parser.parse_args()
 
     config = {
@@ -23,6 +24,7 @@ def get_config():
         "evaluation_type": args.evaluation_type,
         "rounds": args.rounds,
         "use_virustotal": args.use_virustotal,
+        "codex_cmd": args.codex_cmd,
         "openai_api_key": os.getenv("OPENAI_API_KEY"),
         "together_api_key": os.getenv("TOGETHER_API_KEY"),
         "anthropic_api_key": os.getenv("ANTHROPIC_API_KEY"),

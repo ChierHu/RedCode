@@ -13,4 +13,7 @@ python main.py --model claude-3-opus-20240229 --evaluation_type agent --rounds 3
 
 # To include VirusTotal evaluation
 python main.py --model gpt-3.5-turbo --evaluation_type normal --use_virustotal
+
+# Evaluate the Codex agent
+python main.py --model codex --codex_cmd /path/to/codex
 ```
